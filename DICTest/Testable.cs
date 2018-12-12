@@ -8,19 +8,17 @@
     public class Foo : IFoo { }
     public class Foo2 : IFoo { }
 
-    internal class NotWrongInFoo : IFoo
+    public class NotWrongInFoo : IFoo
     {
-        public NotWrongInFoo(NotWrong notWrong)
+        public NotWrongInFoo(WrongClass1 notWrong)
         {
-            this.notWrong = notWrong;
+            this.notWrong = (NotWrong)notWrong;
         }
 
-        NotWrong notWrong;
+        public NotWrong notWrong { get; set; }
     }
 
-    public class Someclass { }
-
-    internal class GenClass<T>
+    public class GenClass<T>
     {
         T value;
     }

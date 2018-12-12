@@ -42,5 +42,47 @@ namespace DICTest
             var objects = provider.ResolveAll<IFoo>();            
             Assert.AreEqual(objects.Count(), 2);
         }
+
+        [TestMethod]
+        public void ResolveGenTypeTest()
+        {
+            var config = new DependenciesConfiguration();
+            config.Register(typeof(IFoo), typeof(Foo));
+            config.Register(typeof(GenClass<IFoo>), typeof(GenClass<IFoo>));
+            var provider = new DependencyProvider(config);
+            GenClass<IFoo> obj = provider.Resolve<GenClass<IFoo>>();
+            Assert.IsNotNull(obj);
+        }
+
+        [TestMethod]
+        public void WrongRegisterTest()
+        {
+            var config = new DependenciesConfiguration();
+            config.Register(typeof(IWrong), typeof(WrongClass1));
+            var provider = new DependencyProvider(config);
+            IWrong obj = provider.Resolve<IWrong>();
+            Assert.IsNull(obj);
+        }
+
+        [TestMethod]
+        public void NotWrongRegisterTest()
+        {
+            var config = new DependenciesConfiguration();
+            config.Register(typeof(WrongClass1), typeof(NotWrong));
+            var provider = new DependencyProvider(config);
+            IWrong obj = provider.Resolve<WrongClass1>();
+            Assert.IsNotNull(obj);
+        }
+
+        [TestMethod]
+        public void NestedTest()
+        {
+            var config = new DependenciesConfiguration();
+            config.Register(typeof(WrongClass1), typeof(NotWrong));
+            config.Register(typeof(IFoo), typeof(NotWrongInFoo));
+            var provider = new DependencyProvider(config);
+            NotWrongInFoo obj = (NotWrongInFoo)provider.Resolve<IFoo>();
+            Assert.IsNotNull(obj.notWrong);
+        }
     }
 }
