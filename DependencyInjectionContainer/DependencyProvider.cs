@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using System.Collections;
 
 namespace DependencyInjectionContainer
 {
@@ -114,7 +115,18 @@ namespace DependencyInjectionContainer
 
         public IEnumerable<T> ResolveAll<T>() where T : class
         {
-            return (IEnumerable<T>)new Object();
+            IList collection = null;
+            Type type = typeof(T);
+            var dependencies = configuration.GetDependencies(type);
+            if (dependencies != null)
+            {
+                collection = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(type));
+                foreach (var dependency in dependencies)
+                {
+                    collection.Add(GetInstance(dependency));
+                }
+            }
+            return (IEnumerable<T>)collection;
         }
     }
 }

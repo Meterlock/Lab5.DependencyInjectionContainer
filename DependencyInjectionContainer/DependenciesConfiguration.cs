@@ -40,7 +40,7 @@ namespace DependencyInjectionContainer
             return dictionary.TryGetValue(Interface, out dependencies) ? dependencies.Last() : null;
         }
 
-        IEnumerable<Dependency> GetDependencies(Type Interface)
+        public IEnumerable<Dependency> GetDependencies(Type Interface)
         {
             List<Dependency> dependencies;
             return dictionary.TryGetValue(Interface, out dependencies) ? dependencies : null;
