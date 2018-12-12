@@ -2,8 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DependencyInjectionContainer
 {
@@ -25,11 +23,25 @@ namespace DependencyInjectionContainer
 
                 if (!dictionary.TryGetValue(Interface, out dependencies))
                 {
-                    dictionary.TryAdd(Interface, new List<Dependency>() { dependency });
+                    lock (dictionary)
+                    {
+                        if (!dictionary.TryGetValue(Interface, out dependencies))
+                        {
+                            dictionary.TryAdd(Interface, new List<Dependency>() { dependency });
+                            return;
+                        }
+                    }                    
                 }
-                else if (!dependencies.Contains(dependency))
+
+                if (!dependencies.Contains(dependency))
                 {
-                    dependencies.Add(dependency);
+                    lock (dependencies)
+                    {
+                        if (!dependencies.Contains(dependency))
+                        {
+                            dependencies.Add(dependency);
+                        }
+                    }                    
                 }
             }
         }
