@@ -20,7 +20,7 @@ namespace DependencyInjectionContainer
         {
             if (!realization.IsInterface && !realization.IsAbstract && Interface.IsAssignableFrom(realization))
             {
-                Dependency dependency = new Dependency(Interface, realization, isSingleton);
+                var dependency = new Dependency(Interface, realization, isSingleton);
                 List<Dependency> dependencies;
 
                 if (!dictionary.TryGetValue(Interface, out dependencies))
@@ -32,6 +32,12 @@ namespace DependencyInjectionContainer
                     dependencies.Add(dependency);
                 }
             }
+        }
+
+        public Dependency GetDependency(Type Interface)
+        {
+            List<Dependency> dependencies;
+            return dictionary.TryGetValue(Interface, out dependencies) ? dependencies.Last() : null;
         }
 
         IEnumerable<Dependency> GetDependencies(Type Interface)
