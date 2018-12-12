@@ -16,7 +16,7 @@ namespace DependencyInjectionContainer
 
         public void Register(Type Interface, Type realization, bool isSingleton = false)
         {
-            if (!realization.IsInterface && !realization.IsAbstract && Interface.IsAssignableFrom(realization))
+            if (!realization.IsInterface && !realization.IsAbstract && (realization.IsGenericTypeDefinition || Interface.IsAssignableFrom(realization)))
             {
                 var dependency = new Dependency(Interface, realization, isSingleton);
                 List<Dependency> dependencies;

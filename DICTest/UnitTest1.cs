@@ -18,7 +18,7 @@ namespace DICTest
             var provider = new DependencyProvider(config);
             IFoo foo1 = provider.Resolve<IFoo>();
             IFoo foo2 = provider.Resolve<IFoo>();
-            Assert.ReferenceEquals(foo1, foo2);
+            Assert.AreSame(foo1, foo2);
         }
 
         [TestMethod]
@@ -83,6 +83,17 @@ namespace DICTest
             var provider = new DependencyProvider(config);
             NotWrongInFoo obj = (NotWrongInFoo)provider.Resolve<IFoo>();
             Assert.IsNotNull(obj.notWrong);
+        }
+
+        [TestMethod]
+        public void OpenGenericTest()
+        {
+            var config = new DependenciesConfiguration();
+            config.Register(typeof(IService<>), typeof(ServiceImpl<>));
+            config.Register(typeof(IFoo), typeof(Foo));
+            var provider = new DependencyProvider(config);
+            IService<Foo> obj = provider.Resolve<IService<Foo>>();
+            Assert.IsNotNull(obj);
         }
     }
 }

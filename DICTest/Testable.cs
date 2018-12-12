@@ -22,4 +22,7 @@
     {
         T value;
     }
+
+    public interface IService<T> { }
+    public class ServiceImpl<T> : IService<T> { }
 }

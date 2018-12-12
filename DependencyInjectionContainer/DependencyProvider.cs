@@ -17,6 +17,7 @@ namespace DependencyInjectionContainer
 
         private DependenciesConfiguration configuration;
         private ConcurrentStack<Type> cycleStack;
+        private Type currentType;
 
         public T Resolve<T>() where T : class
         {
@@ -30,6 +31,7 @@ namespace DependencyInjectionContainer
 
             if (dependency != null)
             {
+                currentType = type;
                 return (T)GetInstance(dependency);
             }
 
@@ -67,7 +69,7 @@ namespace DependencyInjectionContainer
                 Type instanceType = dependency.Realization;
                 if (instanceType.IsGenericTypeDefinition)
                 {
-                    instanceType = instanceType.MakeGenericType(dependency.Interface.GenericTypeArguments);
+                    instanceType = instanceType.MakeGenericType(currentType.GenericTypeArguments);
                 }
 
                 ConstructorInfo[] constructors = instanceType.GetConstructors().OrderByDescending(x => x.GetParameters().Length).ToArray();
