@@ -2,7 +2,7 @@
 
 namespace DependencyInjectionContainer
 {
-    class Dependency
+    public class Dependency
     {
         public Dependency(Type _Interface, Type _Realization, bool _IsSingleton = false)
         {

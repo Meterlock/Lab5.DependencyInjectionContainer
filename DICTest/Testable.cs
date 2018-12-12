@@ -6,6 +6,7 @@
 
     public interface IFoo { }
     public class Foo : IFoo { }
+    public class Foo2 : IFoo { }
 
     internal class NotWrongInFoo : IFoo
     {

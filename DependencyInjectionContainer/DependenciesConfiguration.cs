@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace DependencyInjectionContainer
 {
-    class DependenciesConfiguration
+    public class DependenciesConfiguration
     {
         public DependenciesConfiguration()
         {

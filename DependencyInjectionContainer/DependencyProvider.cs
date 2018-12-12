@@ -7,7 +7,7 @@ using System.Collections;
 
 namespace DependencyInjectionContainer
 {
-    class DependencyProvider
+    public class DependencyProvider
     {
         public DependencyProvider(DependenciesConfiguration config)
         {
